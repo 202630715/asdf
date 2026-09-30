@@ -3,415 +3,517 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>네온 스네이크 게임 (Retro Snake Game)</title>
+    <title>☆★약속 거절 핑계 추천★☆</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            user-select: none;
+        @import url('https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&family=Gowun+Batang:wght@700&display=swap');
+
+        :root {
+            --neon-yellow: #ffff00;
+            --neon-green: #00ff00;
+            --hot-pink: #ff007f;
+            --deep-red: #cc0000;
         }
 
         body {
-            background-color: #0d0f18;
+            background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), 
+                        url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1000&auto=format&fit=crop') center/cover fixed;
             color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Gowun Batang', serif;
+            margin: 0;
+            padding: 20px 10px;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
-            min-height: 100vh;
-            overflow: hidden;
         }
 
-        .game-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 20px;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            max-width: 95vw;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
+        .container {
             width: 100%;
-            max-width: 400px;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-
-        .score-board {
-            display: flex;
-            gap: 20px;
-        }
-
-        .score-box {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 8px 16px;
-            border-radius: 8px;
-            border-left: 4px solid #00ffcc;
-        }
-
-        .high-score-box {
-            border-left-color: #ff007f;
-        }
-
-        .score-label {
-            font-size: 0.75rem;
-            color: #888;
-            text-transform: uppercase;
-        }
-
-        .score-val {
-            font-size: 1.2rem;
-            color: #fff;
-        }
-
-        .canvas-wrapper {
+            max-width: 650px;
+            background: rgba(0, 0, 0, 0.75);
+            border: 4px dashed var(--neon-yellow);
+            padding: 20px;
+            box-shadow: 0 0 25px rgba(255, 255, 0, 0.5), inset 0 0 15px rgba(255, 0, 127, 0.5);
+            border-radius: 15px;
+            text-align: center;
             position: relative;
         }
 
-        canvas {
-            background-color: #050608;
-            border-radius: 12px;
-            border: 2px solid #1f2430;
-            box-shadow: 0 0 20px rgba(0, 255, 204, 0.1);
+        h1 {
+            font-family: 'East Sea Dokdo', cursive;
+            font-size: 3rem;
+            color: var(--neon-yellow);
+            text-shadow: 
+                3px 3px 0px var(--deep-red),
+                -2px -2px 0px #000,
+                0 0 15px var(--hot-pink);
+            margin: 10px 0;
+            letter-spacing: 2px;
+            animation: blink 1.5s infinite alternate;
         }
 
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(5, 6, 8, 0.85);
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(5px);
-            transition: opacity 0.3s;
+        @keyframes blink {
+            0% { opacity: 0.9; text-shadow: 3px 3px 0px var(--deep-red), 0 0 10px var(--hot-pink); }
+            100% { opacity: 1; text-shadow: 3px 3px 0px #0000ff, 0 0 25px var(--neon-green); }
         }
 
-        .overlay.hidden {
-            display: none;
+        p.quote {
+            font-size: 1.1rem;
+            color: #ffffff;
+            background: rgba(255, 0, 127, 0.3);
+            padding: 8px;
+            border-radius: 20px;
+            border: 1px solid var(--hot-pink);
+            margin-bottom: 25px;
+            text-shadow: 1px 1px 2px #000;
         }
 
-        .overlay h1 {
-            font-size: 2rem;
-            color: #00ffcc;
-            text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
-            margin-bottom: 10px;
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            text-align: left;
         }
 
-        .overlay p {
-            color: #aaa;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
+        @media (max-width: 500px) {
+            .form-grid { grid-template-columns: 1fr; }
         }
 
-        .btn {
-            background: linear-gradient(135deg, #00ffcc, #00b894);
-            color: #000;
-            border: none;
-            padding: 12px 28px;
-            font-size: 1rem;
+        .form-group {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        label {
+            display: block;
             font-weight: bold;
-            border-radius: 30px;
+            font-size: 0.95rem;
+            color: var(--neon-green);
+            text-shadow: 1px 1px 2px #000;
+            margin-bottom: 6px;
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            background: #000;
+            color: #fff;
+            border: 2px solid var(--neon-yellow);
+            border-radius: 5px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        button.btn-submit {
+            width: 100%;
+            padding: 15px;
+            margin-top: 20px;
+            background: linear-gradient(180deg, #ff7675, #d63031);
+            color: var(--neon-yellow);
+            font-family: 'East Sea Dokdo', cursive;
+            font-size: 2.2rem;
+            border: 3px solid #fff;
+            border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
-            transition: transform 0.1s, box-shadow 0.1s;
+            text-shadow: 2px 2px 0px #000;
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.6);
+            transition: transform 0.1s;
         }
 
-        .btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(0, 255, 204, 0.6);
-        }
-
-        .btn:active {
+        button.btn-submit:active {
             transform: scale(0.98);
         }
 
-        /* Controls for Mobile */
-        .controls {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 15px;
-            width: 200px;
-        }
-
-        .ctrl-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff;
-            padding: 15px;
-            border-radius: 10px;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
+        /* 로딩 오버레이 모달 */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            flex-direction: column;
             justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-title {
+            font-family: 'East Sea Dokdo', cursive;
+            font-size: 3rem;
+            color: var(--neon-yellow);
+            text-shadow: 0 0 10px var(--hot-pink);
+            margin-bottom: 10px;
+        }
+
+        .loading-status {
+            font-size: 1.5rem;
+            color: var(--neon-green);
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        .progress-bar-container {
+            width: 80%;
+            max-width: 400px;
+            height: 30px;
+            background: #222;
+            border: 2px solid var(--neon-yellow);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 10px var(--neon-yellow);
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--hot-pink), var(--neon-yellow));
+            transition: width 0.1s linear;
+        }
+
+        .result-section {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .result-title-banner {
+            font-size: 1.3rem;
+            color: var(--neon-yellow);
+            background: var(--deep-red);
+            padding: 8px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 2px solid var(--neon-yellow);
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        .result-card {
+            background: rgba(0, 0, 0, 0.85);
+            border: 3px solid var(--neon-green);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: left;
+            position: relative;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+        }
+
+        .rank-badge {
+            position: absolute;
+            top: -12px;
+            right: 10px;
+            background: var(--hot-pink);
+            color: #fff;
+            font-family: 'East Sea Dokdo', cursive;
+            font-size: 1.4rem;
+            padding: 2px 12px;
+            border-radius: 15px;
+            border: 2px solid #fff;
+            text-shadow: 1px 1px 1px #000;
+        }
+
+        .reason-category {
+            color: var(--neon-yellow);
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .reason-title {
+            font-size: 1.2rem;
+            color: #fff;
+            margin: 5px 0;
+            text-shadow: 1px 1px 2px var(--deep-red);
+        }
+
+        .reason-desc {
+            font-size: 0.85rem;
+            color: #dfe6e9;
+            margin-bottom: 10px;
+        }
+
+        .template-box {
+            background: #1e1e1e;
+            border: 2px dotted var(--neon-yellow);
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #fff;
+            white-space: pre-wrap;
+        }
+
+        .btn-copy {
+            margin-top: 10px;
+            background: var(--neon-yellow);
+            color: #000;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.85rem;
             cursor: pointer;
+            float: right;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
         }
 
-        .ctrl-btn:active {
-            background: rgba(0, 255, 204, 0.3);
+        .btn-copy:hover {
+            background: #fff;
         }
 
-        .up { grid-column: 2; }
-        .left { grid-column: 1; grid-row: 2; }
-        .down { grid-column: 2; grid-row: 2; }
-        .right { grid-column: 3; grid-row: 2; }
-
-        @media (min-width: 600px) {
-            .controls {
-                display: none; /* Hide touch controls on desktop */
-            }
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
         }
     </style>
 </head>
 <body>
 
-    <div class="game-container">
-        <div class="header">
-            <div class="score-board">
-                <div class="score-box">
-                    <div class="score-label">Score</div>
-                    <div class="score-val" id="score">0</div>
-                </div>
-                <div class="score-box high-score-box">
-                    <div class="score-label">Best</div>
-                    <div class="score-val" id="highScore">0</div>
-                </div>
-            </div>
+<div class="container">
+    <h1>✿ 거절도 예술이다람쥐 ✿</h1>
+    <p class="quote">"영원하지 않기에 아름다운 약속... 오늘은 쉬어가세요..." 🌸</p>
+
+    <div class="form-grid">
+        <div class="form-group">
+            <label for="time">1. 약속 시간대</label>
+            <select id="time">
+                <option value="1">1. 약속 한 달 전</option>
+                <option value="2">2. 약속 1~2주 전</option>
+                <option value="3">3. 약속 2~4일 전</option>
+                <option value="4">4. 약속 1일 전</option>
+                <option value="5">5. 약속 8시간 전</option>
+                <option value="6">6. 약속 직전 / 30분 전 (긴급)</option>
+            </select>
         </div>
 
-        <div class="canvas-wrapper">
-            <canvas id="gameCanvas" width="400" height="400"></canvas>
-            
-            <div id="startOverlay" class="overlay">
-                <h1>NEON SNAKE</h1>
-                <p>방향키(키보드) 또는 버튼으로 조작하세요</p>
-                <button class="btn" onclick="startGame()">게임 시작</button>
-            </div>
-
-            <div id="gameOverOverlay" class="overlay hidden">
-                <h1 style="color: #ff007f; text-shadow: 0 0 10px rgba(255,0,127,0.5);">GAME OVER</h1>
-                <p id="finalScore">최종 점수: 0</p>
-                <button class="btn" onclick="startGame()">다시하기</button>
-            </div>
+        <div class="form-group">
+            <label for="relation">2. 상대와의 관계</label>
+            <select id="relation">
+                <option value="1">1. 친밀한 관계 (친구/가족)</option>
+                <option value="2">2. 평범한 관계 (친구 등등)</option>
+                <option value="3">3. 딱히 친하지 않은 관계</option>
+                <option value="4">4. 초면</option>
+                <option value="5">5. 업무 관계</option>
+            </select>
         </div>
 
-        <div class="controls">
-            <div class="ctrl-btn up" onclick="handleTouch('UP')">▲</div>
-            <div class="ctrl-btn left" onclick="handleTouch('LEFT')">◀</div>
-            <div class="ctrl-btn down" onclick="handleTouch('DOWN')">▼</div>
-            <div class="ctrl-btn right" onclick="handleTouch('RIGHT')">▶</div>
+        <div class="form-group">
+            <label for="freq">3. 만나는 빈도</label>
+            <select id="freq">
+                <option value="1">1. 일 년에 몇 번</option>
+                <option value="2">2. 몇 달에 몇 번</option>
+                <option value="3">3. 일주일동안 가끔</option>
+                <option value="4">4. 일주일동안 자주</option>
+                <option value="5">5. 매일</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="personality">4. 상대 성향</label>
+            <select id="personality">
+                <option value="1">1. 관대함</option>
+                <option value="2">2. 평범함</option>
+                <option value="3">3. 엄격함</option>
+                <option value="4">4. 개빡셈</option>
+                <option value="5">5. 레전드</option>
+            </select>
         </div>
     </div>
 
-    <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const scoreEl = document.getElementById('score');
-        const highScoreEl = document.getElementById('highScore');
-        const startOverlay = document.getElementById('startOverlay');
-        const gameOverOverlay = document.getElementById('gameOverOverlay');
-        const finalScoreEl = document.getElementById('finalScore');
+    <button class="btn-submit" onclick="startLoading()">★ 최적 핑계 도출하기람쥐 ★</button>
 
-        const GRID_SIZE = 20;
-        const TILE_COUNT = canvas.width / GRID_SIZE;
+    <div class="result-section" id="resultSection">
+        <div class="result-title-banner">✦ 알고리즘 추천 핑계 순위 ✦</div>
+        <div id="resultsContainer"></div>
+    </div>
+</div>
 
-        let snake = [];
-        let food = { x: 0, y: 0 };
-        let dx = GRID_SIZE;
-        let dy = 0;
-        let score = 0;
-        let highScore = localStorage.getItem('snakeHighScore') || 0;
-        let gameInterval = null;
-        let gameSpeed = 100;
-        let isChangingDirection = false;
+<!-- 로딩 화면 모달 -->
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-title">🐿️ 초정밀 알고리즘 연산 중... 🐿️</div>
+    <div class="loading-status" id="loadingStatus">만들고있습니다람쥐 (0%)</div>
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+</div>
 
-        highScoreEl.innerText = highScore;
-
-        // Sound generator using Web Audio API
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-        function playSound(type) {
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
+<script>
+    const excusesDB = [
+        {
+            id: 'sick_stomach',
+            category: '✦ 건강 / 신체 ✦',
+            title: '갑작스러운 돌발성 장염 / 식중독',
+            desc: '급작스러운 직전 파토에 절대적 무적 사유. 상대가 아무리 빡세도 방어 가능.',
+            template: "진짜 미안해... 오늘 아침부터 속이 너무 안 좋더니 급성 장염이 온 것 같아. 지금 화장실에서 나올 수가 없을 정도라 도저히 이동을 못하겠어 ㅠㅠ 약속 너무 기다렸는데 미안해, 다음에 내가 먼저 연락할게!",
+            calc: (t, r, f, p) => {
+                let score = 50;
+                if (t >= 4) score += 35;
+                if (p >= 4) score += 15;
+                if (t <= 2) score -= 40;
+                return score;
             }
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-
-            if (type === 'eat') {
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(300, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.1);
-                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.1);
-            } else if (type === 'die') {
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.3);
-                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.3);
+        },
+        {
+            id: 'work_emergency',
+            category: '✦ 업무 / 학업 ✦',
+            title: '긴급 야근 / 상사의 급작스러운 업무 지시',
+            desc: '업무관계나 사회적 관계에서 명분을 챙기는 비난 방어형 사유.',
+            template: "OO님/아 미안해서 어쩌지.. 갑자기 회사 쪽에 긴급 수정 건이 터져서 퇴근을 못 하거나 계속 노트북을 보고 처리해야 할 상황이 됐어. 미리 챙겼어야 했는데 변수가 생겼네.. 오늘 약속은 넘 미안해!",
+            calc: (t, r, f, p) => {
+                let score = 50;
+                if (r === 5) score += 30;
+                if (t >= 3 && t <= 5) score += 20;
+                return score;
+            }
+        },
+        {
+            id: 'family_leak',
+            category: '✦ 집안 / 시설 ✦',
+            title: '집안 누수 / 배관 긴급 기사 방문',
+            desc: '갑작스러운 집안 문제로 당일이나 하루 전 거절하기 매우 유용함.',
+            template: "아 미안해!! 방금 집에 문제가 생겼어.. 배관(누수) 관련해서 기사님이 지금 급하게 오신다고 해서 집을 비울 수가 없는 상황이야. 갑자기 연락해서 정말 미안해 ㅠㅠ",
+            calc: (t, r, f, p) => {
+                let score = 50;
+                if (t === 4 || t === 5) score += 30;
+                if (f >= 4) score += 10;
+                return score;
+            }
+        },
+        {
+            id: 'schedule_overlap',
+            category: '✦ 일정 착오 ✦',
+            title: '캘린더 중복 착오 및 선약 발견',
+            desc: '약속 날짜가 많이 남아있을 때 가장 안전하고 깔끔한 사유.',
+            template: "OO야 정말 미안해! 다이어리 확인하다가 내가 날짜를 완전히 착각한 걸 봤어. 그날 이미 고정으로 잡아둔 가족/회사 일정이 있더라고.. 미리 제대로 안 챙겨서 미안해. 날짜 변경 가능할까?",
+            calc: (t, r, f, p) => {
+                let score = 50;
+                if (t <= 3) score += 40;
+                if (t >= 5) score -= 50;
+                if (p >= 4) score -= 20;
+                return score;
+            }
+        },
+        {
+            id: 'burnout_honest',
+            category: '✦ 컨디션 / 솔직 ✦',
+            title: '솔직한 피로 누적 및 컨디션 난조',
+            desc: '친밀도가 높거나 관대한 상대에게 유용한 어필 카드.',
+            template: "OO야 정말 미안한데.. 내가 이번 주 일 일정이 너무 과했는지 피로가 너무 누적돼서 컨디션이 바닥이야. 나가서 재밌게 못 놀고 민폐만 줄 것 같아서 ㅠㅠ 염치없지만 다음에 컨디션 회복해서 더 좋은 컨디션으로 보자!",
+            calc: (t, r, f, p) => {
+                let score = 50;
+                if (r === 1) score += 25;
+                if (p === 1) score += 25;
+                if (p >= 4) score -= 40;
+                return score;
+            }
+        },
+        {
+            id: 'covid_flu',
+            category: '✦ 건강 / 전염성 ✦',
+            title: '독감 / 코로나 증상으로 인한 격리',
+            desc: '상대방에게 피해를 주지 않겠다는 명분으로 모든 비난을 완벽 차단.',
+            template: "OO야 오늘 가려고 준비 중이었는데 목이 너무 칼칼하고 열감이 있어서 체온 재보니까 독감 기운이 있어.. 혹시나 너한테 옮길까 봐 너무 걱정돼서 그런데, 오늘 약속 미루는 게 맞을 것 같아. 미안해 ㅠㅠ",
+            calc: (t, r, f, p) => {
+                let score = 50;
+                if (t >= 3 && t <= 5) score += 30;
+                if (p >= 3) score += 20;
+                return score;
             }
         }
+    ];
 
-        function startGame() {
-            snake = [
-                { x: 10 * GRID_SIZE, y: 10 * GRID_SIZE },
-                { x: 9 * GRID_SIZE, y: 10 * GRID_SIZE },
-                { x: 8 * GRID_SIZE, y: 10 * GRID_SIZE }
-            ];
-            dx = GRID_SIZE;
-            dy = 0;
-            score = 0;
-            scoreEl.innerText = score;
-            startOverlay.classList.add('hidden');
-            gameOverOverlay.classList.add('hidden');
-            
-            spawnFood();
-            
-            if (gameInterval) clearInterval(gameInterval);
-            gameInterval = setInterval(gameLoop, gameSpeed);
-        }
+    function startLoading() {
+        const overlay = document.getElementById('loadingOverlay');
+        const progressBar = document.getElementById('progressBar');
+        const statusText = document.getElementById('loadingStatus');
+        
+        document.getElementById('resultSection').style.display = 'none';
+        overlay.style.display = 'flex';
 
-        function spawnFood() {
-            food.x = Math.floor(Math.random() * TILE_COUNT) * GRID_SIZE;
-            food.y = Math.floor(Math.random() * TILE_COUNT) * GRID_SIZE;
+        let progress = 0;
+        const totalDuration = 15000; // 15초
+        const intervalTime = 100; // 0.1초마다 업데이트
+        const step = 100 / (totalDuration / intervalTime);
 
-            // Make sure food doesn't spawn on snake
-            snake.forEach(part => {
-                if (part.x === food.x && part.y === food.y) {
-                    spawnFood();
-                }
-            });
-        }
+        const timer = setInterval(() => {
+            progress += step;
+            if (progress > 100) progress = 100;
 
-        function gameLoop() {
-            if (isGameOver()) {
-                playSound('die');
-                clearInterval(gameInterval);
-                finalScoreEl.innerText = `최종 점수: ${score}`;
-                gameOverOverlay.classList.remove('hidden');
-                
-                if (score > highScore) {
-                    highScore = score;
-                    localStorage.setItem('snakeHighScore', highScore);
-                    highScoreEl.innerText = highScore;
-                }
-                return;
-            }
+            progressBar.style.width = progress + '%';
+            const currentInt = Math.floor(progress);
 
-            isChangingDirection = false;
-            clearCanvas();
-            drawFood();
-            moveSnake();
-            drawSnake();
-        }
-
-        function clearCanvas() {
-            ctx.fillStyle = '#050608';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-        }
-
-        function drawSnake() {
-            snake.forEach((part, index) => {
-                if (index === 0) {
-                    ctx.fillStyle = '#00ffcc'; // Head
-                    ctx.shadowBlur = 10;
-                    ctx.shadowColor = '#00ffcc';
-                } else {
-                    ctx.fillStyle = '#00b894'; // Body
-                    ctx.shadowBlur = 0;
-                }
-                ctx.fillRect(part.x, part.y, GRID_SIZE - 2, GRID_SIZE - 2);
-            });
-            ctx.shadowBlur = 0; // reset
-        }
-
-        function moveSnake() {
-            const head = { x: snake[0].x + dx, y: snake[0].y + dy };
-            snake.unshift(head);
-
-            // Check if ate food
-            if (head.x === food.x && head.y === food.y) {
-                score += 10;
-                scoreEl.innerText = score;
-                playSound('eat');
-                spawnFood();
+            // 퍼센트 구간별 로딩 멘트 변경
+            if (currentInt < 15) {
+                statusText.innerText = `만들고있습니다람쥐 (${currentInt}%)`;
+            } else if (currentInt < 45) {
+                statusText.innerText = `다만들었습니다람쥐 (${currentInt}%)`;
+            } else if (currentInt < 70) {
+                statusText.innerText = `진짜다만들었습니다람쥐 (${currentInt}%)`;
+            } else if (currentInt < 90) {
+                statusText.innerText = `ㄹㅇ로다만들었습니다람쥐 (${currentInt}%)`;
+            } else if (currentInt < 100) {
+                statusText.innerText = `진짜조금만기다리셈 (${currentInt}%)`;
             } else {
-                snake.pop();
-            }
-        }
-
-        function drawFood() {
-            ctx.fillStyle = '#ff007f';
-            ctx.shadowBlur = 12;
-            ctx.shadowColor = '#ff007f';
-            ctx.fillRect(food.x, food.y, GRID_SIZE - 2, GRID_SIZE - 2);
-            ctx.shadowBlur = 0;
-        }
-
-        function isGameOver() {
-            const head = snake[0];
-
-            // Wall collision
-            if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height) {
-                return true;
+                statusText.innerText = `완성되었습니다람쥐! (100%)`;
             }
 
-            // Self collision
-            for (let i = 1; i < snake.length; i++) {
-                if (head.x === snake[i].x && head.y === snake[i].y) {
-                    return true;
-                }
+            if (progress >= 100) {
+                clearInterval(timer);
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    runAlgorithm();
+                }, 300);
             }
+        }, intervalTime);
+    }
 
-            return false;
-        }
+    function runAlgorithm() {
+        const t = parseInt(document.getElementById('time').value);
+        const r = parseInt(document.getElementById('relation').value);
+        const f = parseInt(document.getElementById('freq').value);
+        const p = parseInt(document.getElementById('personality').value);
 
-        function changeDirection(dir) {
-            if (isChangingDirection) return;
-
-            const goingUp = dy === -GRID_SIZE;
-            const goingDown = dy === GRID_SIZE;
-            const goingRight = dx === GRID_SIZE;
-            const goingLeft = dx === -GRID_SIZE;
-
-            if (dir === 'LEFT' && !goingRight) { dx = -GRID_SIZE; dy = 0; isChangingDirection = true; }
-            if (dir === 'UP' && !goingDown) { dx = 0; dy = -GRID_SIZE; isChangingDirection = true; }
-            if (dir === 'RIGHT' && !goingLeft) { dx = GRID_SIZE; dy = 0; isChangingDirection = true; }
-            if (dir === 'DOWN' && !goingUp) { dx = 0; dy = GRID_SIZE; isChangingDirection = true; }
-        }
-
-        // Keyboard inputs
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft' || e.key === 'a') changeDirection('LEFT');
-            if (e.key === 'ArrowUp' || e.key === 'w') changeDirection('UP');
-            if (e.key === 'ArrowRight' || e.key === 'd') changeDirection('RIGHT');
-            if (e.key === 'ArrowDown' || e.key === 's') changeDirection('DOWN');
+        let list = excusesDB.map(item => {
+            let finalScore = item.calc(t, r, f, p);
+            finalScore = Math.max(15, Math.min(99, finalScore));
+            return { ...item, score: finalScore };
         });
 
-        // Touch control handler
-        function handleTouch(dir) {
-            changeDirection(dir);
-        }
-    </script>
+        list.sort((a, b) => b.score - a.score);
+
+        const container = document.getElementById('resultsContainer');
+        container.innerHTML = '';
+
+        list.forEach((item, idx) => {
+            const rank = idx + 1;
+
+            const card = document.createElement('div');
+            card.className = 'result-card';
+            card.innerHTML = `
+                <span class="rank-badge">${rank}위 (${item.score}점)</span>
+                <span class="reason-category">${item.category}</span>
+                <div class="reason-title">${item.title}</div>
+                <div class="reason-desc">${item.desc}</div>
+                <div class="template-box" id="msg-${idx}">${item.template}</div>
+                <div class="clearfix">
+                    <button class="btn-copy" onclick="copyMessage('msg-${idx}')">카톡 메시지 복사 ✉</button>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+
+        document.getElementById('resultSection').style.display = 'block';
+    }
+
+    function copyMessage(id) {
+        const text = document.getElementById(id).innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            alert('카톡 메시지가 복사되었습니다람쥐! 🌹');
+        });
+    }
+</script>
+
 </body>
 </html>
